@@ -4,6 +4,7 @@ import {
   ChevronRight,
   Database,
   Home,
+  LogIn,
   Menu,
   Network,
   SquareFunction,
@@ -11,6 +12,7 @@ import {
   X,
 } from "lucide-react";
 import { useState } from "react";
+import { AuthButton } from "./auth/auth-button";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,7 +31,7 @@ export default function Header() {
         >
           <Menu size={24} />
         </button>
-        <h1 className="ml-4 font-semibold text-xl">
+        <h1 className="ml-4 font-semibold text-xl flex-1">
           <Link to="/">
             <img
               alt="TanStack Logo"
@@ -40,6 +42,9 @@ export default function Header() {
             />
           </Link>
         </h1>
+        <div className="ml-auto">
+          <AuthButton />
+        </div>
       </header>
 
       <aside
@@ -185,6 +190,19 @@ export default function Header() {
           >
             <Database size={20} />
             <span className="font-medium">Drizzle</span>
+          </Link>
+
+          <Link
+            activeProps={{
+              className:
+                "flex items-center gap-3 p-3 rounded-lg bg-cyan-600 hover:bg-cyan-700 transition-colors mb-2",
+            }}
+            className="mb-2 flex items-center gap-3 rounded-lg p-3 transition-colors hover:bg-gray-800"
+            onClick={() => setIsOpen(false)}
+            to="/login-demo"
+          >
+            <LogIn size={20} />
+            <span className="font-medium">Auth Demo</span>
           </Link>
 
           {/* Demo Links End */}
