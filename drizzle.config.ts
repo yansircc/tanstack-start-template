@@ -23,5 +23,6 @@ export default defineConfig({
   dialect: 'sqlite',
   dbCredentials: {
     url: getLocalD1DB(),
+    // url: "."
   },
 })
