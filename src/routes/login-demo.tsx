@@ -1,35 +1,25 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { createAuthClient } from 'better-auth/client'
-import { useState, useEffect } from 'react'
+import { useNavigate } from '@tanstack/react-router'
 
 const authClient = createAuthClient()
 
 export const Route = createFileRoute('/login-demo')({
+  loader: async () => {
+    try {
+      const session = await authClient.getSession()
+      return { user: session.data?.user || null }
+    } catch (error) {
+      console.error('Auth check failed:', error)
+      return { user: null }
+    }
+  },
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [user, setUser] = useState<any>(null)
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    checkAuthStatus()
-  }, [])
-
-  const checkAuthStatus = async () => {
-    try {
-      const session = await authClient.getSession()
-      if (session.data?.user) {
-        setIsLoggedIn(true)
-        setUser(session.data.user)
-      }
-    } catch (error) {
-      console.error('Auth check failed:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
+  const { user } = Route.useLoaderData()
+  const navigate = useNavigate()
 
   const handleGoogleSignIn = async () => {
     await authClient.signIn.social({
@@ -40,20 +30,10 @@ function RouteComponent() {
 
   const handleSignOut = async () => {
     await authClient.signOut()
-    setIsLoggedIn(false)
-    setUser(null)
+    navigate({ to: '/login-demo', replace: true })
   }
 
-  if (loading) {
-    return (
-      <div style={{ padding: '2rem', maxWidth: '400px', margin: '0 auto' }}>
-        <h1>Login Demo</h1>
-        <p>Checking authentication status...</p>
-      </div>
-    )
-  }
-
-  if (isLoggedIn) {
+  if (user) {
     return (
       <div style={{ padding: '2rem', maxWidth: '400px', margin: '0 auto' }}>
         <h1>Login Demo</h1>
