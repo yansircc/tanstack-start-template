@@ -72,7 +72,7 @@ function DemoDrizzle() {
         >
           <div className="relative group">
             <div className="absolute -inset-2 bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-500 rounded-lg blur-lg opacity-60 group-hover:opacity-100 transition duration-500"></div>
-            <div className="relative bg-gradient-to-br from-indigo-600 to-purple-600 p-3 rounded-lg">
+            <div className="relative bg-linear-to-br from-indigo-600 to-purple-600 p-3 rounded-lg">
               <img
                 src="/drizzle.svg"
                 alt="Drizzle Logo"

@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as LoginDemoRouteImport } from './routes/login-demo'
+import { Route as LoadVarsRouteImport } from './routes/load-vars'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DemoDrizzleRouteImport } from './routes/demo/drizzle'
 import { Route as DemoStartServerFuncsRouteImport } from './routes/demo/start.server-funcs'
@@ -24,6 +25,11 @@ import { Route as DemoStartSsrDataOnlyRouteImport } from './routes/demo/start.ss
 const LoginDemoRoute = LoginDemoRouteImport.update({
   id: '/login-demo',
   path: '/login-demo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoadVarsRoute = LoadVarsRouteImport.update({
+  id: '/load-vars',
+  path: '/load-vars',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -79,6 +85,7 @@ const DemoStartSsrDataOnlyRoute = DemoStartSsrDataOnlyRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/load-vars': typeof LoadVarsRoute
   '/login-demo': typeof LoginDemoRoute
   '/demo/drizzle': typeof DemoDrizzleRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -92,6 +99,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/load-vars': typeof LoadVarsRoute
   '/login-demo': typeof LoginDemoRoute
   '/demo/drizzle': typeof DemoDrizzleRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -106,6 +114,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/load-vars': typeof LoadVarsRoute
   '/login-demo': typeof LoginDemoRoute
   '/demo/drizzle': typeof DemoDrizzleRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -121,6 +130,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/load-vars'
     | '/login-demo'
     | '/demo/drizzle'
     | '/api/auth/$'
@@ -134,6 +144,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/load-vars'
     | '/login-demo'
     | '/demo/drizzle'
     | '/api/auth/$'
@@ -147,6 +158,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/load-vars'
     | '/login-demo'
     | '/demo/drizzle'
     | '/api/auth/$'
@@ -161,6 +173,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  LoadVarsRoute: typeof LoadVarsRoute
   LoginDemoRoute: typeof LoginDemoRoute
   DemoDrizzleRoute: typeof DemoDrizzleRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
@@ -180,6 +193,13 @@ declare module '@tanstack/react-router' {
       path: '/login-demo'
       fullPath: '/login-demo'
       preLoaderRoute: typeof LoginDemoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/load-vars': {
+      id: '/load-vars'
+      path: '/load-vars'
+      fullPath: '/load-vars'
+      preLoaderRoute: typeof LoadVarsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -257,6 +277,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  LoadVarsRoute: LoadVarsRoute,
   LoginDemoRoute: LoginDemoRoute,
   DemoDrizzleRoute: DemoDrizzleRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,

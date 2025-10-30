@@ -23,5 +23,8 @@
       "database_id": "f5e2dcc5-d467-45d9-b872-114712a4da8e",
       "migrations_dir": "drizzle"
     }
-  ]
+  ],
+  "vars": {
+    "FOO": "BAR"
+  }
 }
