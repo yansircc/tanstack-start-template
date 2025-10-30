@@ -1,7 +1,7 @@
-import { pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core'
+import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core'
 
-export const todos = pgTable('todos', {
-  id: serial('id').primaryKey(),
+export const todos = sqliteTable('todos', {
+  id: integer('id').primaryKey(),
   title: text('title').notNull(),
-  createdAt: timestamp('created_at').defaultNow(),
+  createdAt: integer('created_at', { mode: 'timestamp' }).default(new Date()),
 })

@@ -16,6 +16,12 @@ const config = defineConfig({
     tanstackStart(),
     viteReact(),
   ],
+  ssr: {
+    optimizeDeps: {
+      include: ['drizzle-orm/d1', 'drizzle-orm/sqlite-core'],
+      exclude: ['@cloudflare/vite-plugin'],
+    },
+  },
 })
 
 export default config

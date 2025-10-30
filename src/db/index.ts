@@ -1,13 +1,10 @@
-import { config } from 'dotenv'
-
-import { drizzle } from 'drizzle-orm/node-postgres'
-import { Pool } from 'pg'
-
+import { drizzle } from 'drizzle-orm/d1'
 import * as schema from './schema.ts'
+import { env } from 'cloudflare:workers'
 
-config()
+// Use D1 database directly - no fallbacks to catch real issues
+if (!env.DB) {
+  throw new Error('D1 database binding not found. Make sure wrangler.jsonc is configured correctly and you are running with proper Wrangler integration.')
+}
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL!,
-})
-export const db = drizzle(pool, { schema })
+export const db = drizzle(env.DB, { schema })
