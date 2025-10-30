@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "b25897c7-25ea-42d3-a647-3b0c2ba970b1",
+  "id": "a0bcc192-c581-4655-a3cb-33d10fef082a",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "todos": {
@@ -27,7 +27,7 @@
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false,
-          "default": "'\"2025-10-30T04:53:44.293Z\"'"
+          "default": "(strftime('%s', 'now'))"
         }
       },
       "indexes": {},
