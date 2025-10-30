@@ -231,7 +231,8 @@ function App() {
   const count = useStore(countStore);
   return (
     <div>
-      <button onClick={() => countStore.setState((n) => n + 1)}>
+                <button
+          type="button" onClick={() => countStore.setState((n) => n + 1)}>
         Increment - {count}
       </button>
     </div>
@@ -264,7 +265,8 @@ function App() {
 
   return (
     <div>
-      <button onClick={() => countStore.setState((n) => n + 1)}>
+                <button
+          type="button" onClick={() => countStore.setState((n) => n + 1)}>
         Increment - {count}
       </button>
       <div>Doubled - {doubledCount}</div>

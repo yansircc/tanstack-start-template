@@ -12,9 +12,7 @@
       "invocation_logs": true
     }
   },
-  "compatibility_flags": [
-    "nodejs_compat"
-  ],
+  "compatibility_flags": ["nodejs_compat"],
   "main": "@tanstack/react-start/server-entry",
   "d1_databases": [
     {
