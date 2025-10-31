@@ -56,6 +56,9 @@
 
 4. **初始化数据库**
    ```bash
+   # 生成 migration 文件（首次使用）
+   bun run db:generate
+
    # 创建本地 D1 数据库
    bun run db:push:local
 
@@ -69,6 +72,8 @@
    ```
 
    访问 [http://localhost:3000](http://localhost:3000) 查看应用。
+
+> **💡 提示**: 如果修改了 `wrangler.jsonc` 配置文件，请运行 `bun run gen:types` 重新生成 TypeScript 类型。
 
 ## 📁 项目结构
 
@@ -157,6 +162,34 @@ function App() {
 }
 ```
 
+## ⚙️ 配置管理
+
+### Wrangler 配置
+
+项目使用 `wrangler.jsonc` 配置文件。如果修改了此文件，需要重新生成 TypeScript 类型：
+
+```bash
+# 重新生成 wrangler 类型
+bun run gen:types
+```
+
+### D1 数据库配置
+
+在 `wrangler.jsonc` 中配置数据库绑定：
+
+```jsonc
+{
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "your-database-name",
+      "database_id": "your-database-id",
+      "migrations_dir": "drizzle"
+    }
+  ]
+}
+```
+
 ## 🚀 部署
 
 ### 部署到 Cloudflare Workers
@@ -173,12 +206,17 @@ function App() {
 
 3. **配置 Wrangler**
 
-   更新 `wrangler.toml` 中的数据库绑定：
-   ```toml
-   [[d1_databases]]
-   binding = "DB"
-   database_name = "your-database-name"
-   database_id = "your-database-id"
+   更新 `wrangler.jsonc` 中的数据库绑定：
+   ```jsonc
+   {
+     "d1_databases": [
+       {
+         "binding": "DB",
+         "database_name": "your-database-name",
+         "database_id": "your-database-id"
+       }
+     ]
+   }
    ```
 
 4. **部署数据库 schema**
@@ -226,6 +264,9 @@ function App() {
 bun run dev              # 启动开发服务器
 bun run build            # 构建生产版本
 bun run serve            # 预览构建结果
+
+# 配置和类型
+bun run gen:types        # 生成 wrangler TypeScript 类型
 
 # 数据库
 bun run db:generate      # 生成 migrations

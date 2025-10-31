@@ -8,6 +8,7 @@
     "serve": "vite preview",
     "test": "vitest run",
     "deploy": "wrangler deploy",
+    "gen:types": "wrangler types",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:push:local": "wrangler d1 migrations apply DB --local",

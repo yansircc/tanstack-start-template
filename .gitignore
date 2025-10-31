@@ -11,3 +11,8 @@ count.txt
 .output
 .vinxi
 todos.json
+
+# Temporary database files
+.temp-db.sqlite
+*.sqlite-shm
+*.sqlite-wal
