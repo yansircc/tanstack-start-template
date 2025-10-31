@@ -1,292 +1,268 @@
-Welcome to your new TanStack app! 
+# TanStack Start Template - Cloudflare D1 Edition
 
-# Getting Started
+一个现代化的全栈 Web 应用模板，基于 TanStack Start 构建，集成了 Drizzle ORM 和 Cloudflare D1 数据库，专为 Cloudflare Workers 部署优化。
 
-To run this application:
+## ✨ 特性
 
+- 🚀 **TanStack Start** - 基于 React 的全栈框架，支持 SSR、流式渲染和路由
+- 🗄️ **Drizzle ORM** - 类型安全的 SQL 工具包，支持 migrations 和查询构建
+- ☁️ **Cloudflare D1** - 全球分布的 SQLite 兼容数据库
+- 🔐 **Google OAuth 认证** - 集成 Better Auth 的完整身份验证系统
+- 🎨 **Tailwind CSS** - 实用优先的 CSS 框架，支持深色模式
+- 📦 **TypeScript** - 完整的类型安全支持
+- 🔧 **开发工具** - 集成 Biome 代码格式化和 Vite 开发服务器
+
+## 🛠 技术栈
+
+- **框架**: [TanStack Start](https://tanstack.com/start)
+- **路由**: [TanStack Router](https://tanstack.com/router)
+- **数据库**: [Cloudflare D1](https://developers.cloudflare.com/d1/)
+- **ORM**: [Drizzle ORM](https://orm.drizzle.team/)
+- **认证**: [Better Auth](https://better-auth.com/)
+- **样式**: [Tailwind CSS](https://tailwindcss.com/)
+- **部署**: [Cloudflare Workers](https://developers.cloudflare.com/workers/)
+- **包管理**: [Bun](https://bun.sh/)
+
+## 🚀 快速开始
+
+### 前置要求
+
+- [Bun](https://bun.sh/) 运行时
+- [Cloudflare 账户](https://cloudflare.com/)
+- [Wrangler CLI](https://developers.cloudflare.com/workers/wrangler/)
+
+### 安装步骤
+
+1. **克隆模板**
+   ```bash
+   git clone <your-repo-url>
+   cd tanstack-start-d1-template
+   ```
+
+2. **安装依赖**
+   ```bash
+   bun install
+   ```
+
+3. **配置环境变量**
+   ```bash
+   # 复制环境变量模板
+   cp .env.example .dev.vars
+
+   # 配置 Google OAuth（可选）
+   echo "GOOGLE_CLIENT_ID=your_google_client_id" >> .dev.vars
+   echo "GOOGLE_CLIENT_SECRET=your_google_client_secret" >> .dev.vars
+   ```
+
+4. **初始化数据库**
+   ```bash
+   # 创建本地 D1 数据库
+   bun run db:push:local
+
+   # 或者运行 migrations
+   bun run db:migrate
+   ```
+
+5. **启动开发服务器**
+   ```bash
+   bun run dev
+   ```
+
+   访问 [http://localhost:3000](http://localhost:3000) 查看应用。
+
+## 📁 项目结构
+
+```
+src/
+├── components/          # React 组件
+│   ├── auth/           # 认证相关组件
+│   └── header.tsx      # 页面头部
+├── lib/                # 工具库
+│   ├── auth.ts         # Better Auth 配置
+│   ├── auth-client.ts  # 客户端认证工具
+│   └── db/             # 数据库配置
+├── routes/             # 页面路由
+│   ├── __root.tsx      # 根布局
+│   ├── index.tsx       # 首页
+│   ├── login-demo.tsx  # 登录演示
+│   └── demo/           # 演示页面
+└── styles.css          # 全局样式
+```
+
+## 🗄 数据库操作
+
+### Migrations
 ```bash
-bun install
-bun --bun run start
+# 生成 migration 文件
+bun run db:generate
+
+# 应用 migration 到本地数据库
+bun run db:push:local
+
+# 应用 migration 到远程数据库
+bun run db:push:remote
+
+# 打开数据库管理界面
+bun run db:studio
 ```
 
-# Building For Production
+### Schema 定义
 
-To build this application for production:
+数据库 schema 在 `src/db/schema.ts` 中定义：
 
-```bash
-bun --bun run build
-```
+```typescript
+import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
 
-## Testing
-
-This project uses [Vitest](https://vitest.dev/) for testing. You can run the tests with:
-
-```bash
-bun --bun run test
-```
-
-## Styling
-
-This project uses [Tailwind CSS](https://tailwindcss.com/) for styling.
-
-
-
-
-## Routing
-This project uses [TanStack Router](https://tanstack.com/router). The initial setup is a file based router. Which means that the routes are managed as files in `src/routes`.
-
-### Adding A Route
-
-To add a new route to your application just add another a new file in the `./src/routes` directory.
-
-TanStack will automatically generate the content of the route file for you.
-
-Now that you have two routes you can use a `Link` component to navigate between them.
-
-### Adding Links
-
-To use SPA (Single Page Application) navigation you will need to import the `Link` component from `@tanstack/react-router`.
-
-```tsx
-import { Link } from "@tanstack/react-router";
-```
-
-Then anywhere in your JSX you can use it like so:
-
-```tsx
-<Link to="/about">About</Link>
-```
-
-This will create a link that will navigate to the `/about` route.
-
-More information on the `Link` component can be found in the [Link documentation](https://tanstack.com/router/v1/docs/framework/react/api/router/linkComponent).
-
-### Using A Layout
-
-In the File Based Routing setup the layout is located in `src/routes/__root.tsx`. Anything you add to the root route will appear in all the routes. The route content will appear in the JSX where you use the `<Outlet />` component.
-
-Here is an example layout that includes a header:
-
-```tsx
-import { Outlet, createRootRoute } from '@tanstack/react-router'
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
-
-import { Link } from "@tanstack/react-router";
-
-export const Route = createRootRoute({
-  component: () => (
-    <>
-      <header>
-        <nav>
-          <Link to="/">Home</Link>
-          <Link to="/about">About</Link>
-        </nav>
-      </header>
-      <Outlet />
-      <TanStackRouterDevtools />
-    </>
-  ),
-})
-```
-
-The `<TanStackRouterDevtools />` component is not required so you can remove it if you don't want it in your layout.
-
-More information on layouts can be found in the [Layouts documentation](https://tanstack.com/router/latest/docs/framework/react/guide/routing-concepts#layouts).
-
-
-## Data Fetching
-
-There are multiple ways to fetch data in your application. You can use TanStack Query to fetch data from a server. But you can also use the `loader` functionality built into TanStack Router to load the data for a route before it's rendered.
-
-For example:
-
-```tsx
-const peopleRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: "/people",
-  loader: async () => {
-    const response = await fetch("https://swapi.dev/api/people");
-    return response.json() as Promise<{
-      results: {
-        name: string;
-      }[];
-    }>;
-  },
-  component: () => {
-    const data = peopleRoute.useLoaderData();
-    return (
-      <ul>
-        {data.results.map((person) => (
-          <li key={person.name}>{person.name}</li>
-        ))}
-      </ul>
-    );
-  },
+export const users = sqliteTable("users", {
+  id: text("id").primaryKey(),
+  email: text("email").notNull().unique(),
+  name: text("name"),
+  // ...更多字段
 });
 ```
 
-Loaders simplify your data fetching logic dramatically. Check out more information in the [Loader documentation](https://tanstack.com/router/latest/docs/framework/react/guide/data-loading#loader-parameters).
+## 🔐 身份验证
 
-### React-Query
+项目集成了完整的 Google OAuth 认证系统：
 
-React-Query is an excellent addition or alternative to route loading and integrating it into you application is a breeze.
+### 配置步骤
 
-First add your dependencies:
+1. 在 [Google Cloud Console](https://console.cloud.google.com/) 创建 OAuth 应用
+2. 添加环境变量：
+   ```bash
+   GOOGLE_CLIENT_ID=your_client_id
+   GOOGLE_CLIENT_SECRET=your_client_secret
+   ```
+3. 配置重定向 URI：`http://localhost:3000/api/auth/callback/google`
+
+### 使用示例
+
+```tsx
+import { AuthButton } from "@/components/auth/auth-button";
+import { ProtectedRoute } from "@/components/auth/protected-route";
+import { useAuth } from "@/lib/auth-client";
+
+function App() {
+  const { user, isAuthenticated } = useAuth();
+
+  return (
+    <div>
+      <AuthButton />
+
+      <ProtectedRoute>
+        <div>只有登录用户能看到的内容</div>
+      </ProtectedRoute>
+    </div>
+  );
+}
+```
+
+## 🚀 部署
+
+### 部署到 Cloudflare Workers
+
+1. **登录 Cloudflare**
+   ```bash
+   npx wrangler login
+   ```
+
+2. **创建 D1 数据库**
+   ```bash
+   npx wrangler d1 create DB
+   ```
+
+3. **配置 Wrangler**
+
+   更新 `wrangler.toml` 中的数据库绑定：
+   ```toml
+   [[d1_databases]]
+   binding = "DB"
+   database_name = "your-database-name"
+   database_id = "your-database-id"
+   ```
+
+4. **部署数据库 schema**
+   ```bash
+   bun run db:push:remote
+   ```
+
+5. **设置环境变量**
+   ```bash
+   npx wrangler secret put GOOGLE_CLIENT_ID
+   npx wrangler secret put GOOGLE_CLIENT_SECRET
+   ```
+
+6. **部署应用**
+   ```bash
+   bun run deploy
+   ```
+
+## 🎯 功能演示
+
+### 已实现的功能
+
+- ✅ **SSR 演示** - 服务端渲染页面
+- ✅ **API 请求** - 客户端数据获取
+- ✅ **Server Functions** - 服务端函数调用
+- ✅ **Drizzle 集成** - 数据库操作演示
+- ✅ **Google OAuth** - 完整的认证流程
+- ✅ **受保护路由** - 基于认证状态的路由保护
+
+### 访问演示页面
+
+- 首页: `/`
+- 认证演示: `/login-demo`
+- API 演示: `/demo/start/api-request`
+- Server Functions: `/demo/start/server-funcs`
+- SSR 演示: `/demo/start/ssr`
+- Drizzle 演示: `/demo/drizzle`
+
+## 🛠 开发工具
+
+### 可用脚本
 
 ```bash
-bun install @tanstack/react-query @tanstack/react-query-devtools
+# 开发
+bun run dev              # 启动开发服务器
+bun run build            # 构建生产版本
+bun run serve            # 预览构建结果
+
+# 数据库
+bun run db:generate      # 生成 migrations
+bun run db:migrate       # 运行 migrations
+bun run db:push:local    # 推送到本地数据库
+bun run db:push:remote   # 推送到远程数据库
+bun run db:studio        # 打开数据库管理界面
+
+# 代码质量
+bun run lint             # 代码检查
+bun run lint:fix         # 自动修复问题
+bun run format           # 代码格式化
+bun run typecheck        # TypeScript 类型检查
+
+# 测试
+bun run test             # 运行测试
+
+# 部署
+bun run deploy           # 部署到 Cloudflare Workers
 ```
 
-Next we'll need to create a query client and provider. We recommend putting those in `main.tsx`.
+## 📚 学习资源
 
-```tsx
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+- [TanStack Start 文档](https://tanstack.com/start/latest)
+- [Drizzle ORM 文档](https://orm.drizzle.team/)
+- [Cloudflare D1 文档](https://developers.cloudflare.com/d1/)
+- [Better Auth 文档](https://better-auth.com/)
+- [Tailwind CSS 文档](https://tailwindcss.com/docs)
 
-// ...
+## 🤝 贡献
 
-const queryClient = new QueryClient();
+欢迎提交 Issue 和 Pull Request！
 
-// ...
+## 📄 许可证
 
-if (!rootElement.innerHTML) {
-  const root = ReactDOM.createRoot(rootElement);
+MIT License
 
-  root.render(
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-    </QueryClientProvider>
-  );
-}
-```
+---
 
-You can also add TanStack Query Devtools to the root route (optional).
-
-```tsx
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-
-const rootRoute = createRootRoute({
-  component: () => (
-    <>
-      <Outlet />
-      <ReactQueryDevtools buttonPosition="top-right" />
-      <TanStackRouterDevtools />
-    </>
-  ),
-});
-```
-
-Now you can use `useQuery` to fetch your data.
-
-```tsx
-import { useQuery } from "@tanstack/react-query";
-
-import "./App.css";
-
-function App() {
-  const { data } = useQuery({
-    queryKey: ["people"],
-    queryFn: () =>
-      fetch("https://swapi.dev/api/people")
-        .then((res) => res.json())
-        .then((data) => data.results as { name: string }[]),
-    initialData: [],
-  });
-
-  return (
-    <div>
-      <ul>
-        {data.map((person) => (
-          <li key={person.name}>{person.name}</li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
-export default App;
-```
-
-You can find out everything you need to know on how to use React-Query in the [React-Query documentation](https://tanstack.com/query/latest/docs/framework/react/overview).
-
-## State Management
-
-Another common requirement for React applications is state management. There are many options for state management in React. TanStack Store provides a great starting point for your project.
-
-First you need to add TanStack Store as a dependency:
-
-```bash
-bun install @tanstack/store
-```
-
-Now let's create a simple counter in the `src/App.tsx` file as a demonstration.
-
-```tsx
-import { useStore } from "@tanstack/react-store";
-import { Store } from "@tanstack/store";
-import "./App.css";
-
-const countStore = new Store(0);
-
-function App() {
-  const count = useStore(countStore);
-  return (
-    <div>
-                <button
-          type="button" onClick={() => countStore.setState((n) => n + 1)}>
-        Increment - {count}
-      </button>
-    </div>
-  );
-}
-
-export default App;
-```
-
-One of the many nice features of TanStack Store is the ability to derive state from other state. That derived state will update when the base state updates.
-
-Let's check this out by doubling the count using derived state.
-
-```tsx
-import { useStore } from "@tanstack/react-store";
-import { Store, Derived } from "@tanstack/store";
-import "./App.css";
-
-const countStore = new Store(0);
-
-const doubledStore = new Derived({
-  fn: () => countStore.state * 2,
-  deps: [countStore],
-});
-doubledStore.mount();
-
-function App() {
-  const count = useStore(countStore);
-  const doubledCount = useStore(doubledStore);
-
-  return (
-    <div>
-                <button
-          type="button" onClick={() => countStore.setState((n) => n + 1)}>
-        Increment - {count}
-      </button>
-      <div>Doubled - {doubledCount}</div>
-    </div>
-  );
-}
-
-export default App;
-```
-
-We use the `Derived` class to create a new store that is derived from another store. The `Derived` class has a `mount` method that will start the derived store updating.
-
-Once we've created the derived store we can use it in the `App` component just like we would any other store using the `useStore` hook.
-
-You can find out everything you need to know on how to use TanStack Store in the [TanStack Store documentation](https://tanstack.com/store/latest).
-
-# Demo files
-
-Files prefixed with `demo` can be safely deleted. They are there to provide a starting point for you to play around with the features you've installed.
-
-# Learn More
-
-You can learn more about all of the offerings from TanStack in the [TanStack documentation](https://tanstack.com).
+⭐ 如果这个模板对你有帮助，请给个 Star！
